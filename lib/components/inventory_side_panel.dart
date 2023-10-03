@@ -23,8 +23,7 @@ class InventorySidePanel extends StatelessWidget {
               child: Column(
                 children: [
                   CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('path_to_image'), // Replace with the path to the user's profile image
+                    radius: 40,// Replace with the path to the user's profile image
                   ),
                   SizedBox(height: 16),
                   Text(

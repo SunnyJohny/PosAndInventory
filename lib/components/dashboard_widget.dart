@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_desktop_app/components/custom_sales_report_modal.dart';
 import 'package:my_desktop_app/components/profitandlossmodal.dart';
+import 'package:my_desktop_app/components/custom_table.dart';
 
 import 'package:pdf/pdf.dart';
 import 'dart:io';
@@ -11,16 +12,41 @@ import 'dart:io';
 import 'package:pdf/widgets.dart' as pw;
 
 // Define a class for your dashboard widget
+
+// Define a class for your dashboard widget
 class DashboardWidget extends StatefulWidget {
   final String title;
-  final List<Map<String, dynamic>> items; // This will hold your data
-  final void Function() printReportCallback; // Callback for printing reports
+  final List<Map<String, dynamic>> items;
+  final CustomDataTableWidget dataTable; // CustomDataTable as a parameter
 
-  // Constructor to initialize the widget
+  // General and intuitive variable names
+  final double statistic1Value; // E.g., Total Revenue
+  final double statistic2Value; // E.g., Cost of Goods Sold
+  final double statistic3Value; // E.g., Operating Expenses
+  final double statistic4Value; // E.g., Total Profit
+
+  // Add these fields to the constructor
+  final String statistic1Title; // E.g., 'Total Revenue'
+  final String statistic2Title; // E.g., 'Cost of Goods Sold'
+  final String statistic3Title; // E.g., 'Operating Expenses'
+  final String statistic4Title; // E.g., 'Total Profit'
+
   DashboardWidget({
     required this.title,
     required this.items,
-    required this.printReportCallback,
+    required this.dataTable, // Include CustomDataTableWidget as a parameter
+
+    // Updated parameter names
+    required this.statistic1Value,
+    required this.statistic2Value,
+    required this.statistic3Value,
+    required this.statistic4Value,
+
+    // Added parameters for statistic titles
+    required this.statistic1Title,
+    required this.statistic2Title,
+    required this.statistic3Title,
+    required this.statistic4Title,
   });
 
   @override
@@ -166,6 +192,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   //   final startIndex = (currentPage - 1) * itemsPerPage;
   //   return widget.items.skip(startIndex).take(itemsPerPage).toList();
   // }
+
+/*  The  First Paginated Item*/
+
   List<Map<String, dynamic>> get paginatedItems {
     sortItemsByDate(); // Sort the items before pagination
     List<Map<String, dynamic>> filtered = [];
@@ -202,6 +231,49 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       return paginatedItems;
     }
   }
+
+  // //-------------------------filtered&PagenatedItems---------------
+
+  // // Add a field to store the filtered and paginated data
+  // List<Map<String, dynamic>> filteredAndPaginatedData = [];
+
+  // // Update the paginatedItems getter method to handle filtering and pagination
+  // List<Map<String, dynamic>> get paginatedItems {
+  //   sortItemsByDate(); // Sort the items before pagination
+  //   List<Map<String, dynamic>> filtered = [];
+
+  //   if (fromDate != null && toDate != null) {
+  //     // If both fromDate and toDate are selected, filter by date range
+  //     filtered = widget.items.where((item) {
+  //       final itemDate = DateTime.parse(item['date']);
+  //       return itemDate.isAfter(fromDate!) &&
+  //           itemDate.isBefore(toDate!.add(Duration(days: 1)));
+  //     }).toList();
+  //   } else {
+  //     // If no date range is selected, show all items
+  //     filtered = widget.items;
+  //   }
+
+  //   // Apply additional filtering based on the search text
+  //   if (_searchText.isNotEmpty) {
+  //     filtered = filtered.where((item) {
+  //       // Customize this part based on your search logic
+  //       // For example, check if the item name contains the search text
+  //       return item['description']
+  //           .toLowerCase()
+  //           .contains(_searchText.toLowerCase());
+  //     }).toList();
+  //   }
+
+  //   // Apply pagination
+  //   final startIndex = (currentPage - 1) * itemsPerPage;
+  //   filteredAndPaginatedData =
+  //       filtered.skip(startIndex).take(itemsPerPage).toList();
+
+  //   return filteredAndPaginatedData;
+  // }
+
+  // //------------------------End of Filtered&PaginatedItems---------
 
   double getTodaySales() {
     var now = DateTime.now();
@@ -350,6 +422,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        
         children: [
           Padding(
             padding: EdgeInsets.only(left: 16),
@@ -362,36 +435,29 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           Row(
             children: [
               _buildStatCard(
-                'Revenue',
-                // '₦${getTotalSales().toStringAsFixed(2)}',
-                '₦200',
-
-                Icons.trending_up, // Updated icon
+                widget.statistic1Title, // Use the passed title
+                '₦${widget.statistic1Value.toStringAsFixed(2)}',
+                Icons.trending_up,
                 Colors.blue,
               ),
               SizedBox(width: 16),
               _buildStatCard(
-                'COGS',
-                // getTotalCOGS(),
-                '₦400',
+                widget.statistic2Title, // Use the passed title
+                '₦${widget.statistic2Value.toStringAsFixed(2)}',
 
                 Icons.receipt,
                 Colors.orange,
               ),
               SizedBox(width: 16),
               _buildStatCard(
-                'Opex',
-                // '₦${getTotalSales().toStringAsFixed(2)}',
-                '₦500',
-
+                widget.statistic3Title, // Use the passed title
+                '₦${widget.statistic3Value.toStringAsFixed(2)}',
                 Icons.money_off, // Updated icon
                 Colors.green,
               ),
               _buildStatCard(
-                'Profit',
-                // getProductsSoldToday(),
-                '₦900',
-
+                widget.statistic4Title, // Use the passed title
+                '₦${widget.statistic4Value.toStringAsFixed(2)}',
                 Icons.assignment, // Updated icon
                 Color.fromARGB(255, 133, 50, 249),
               ),
@@ -452,7 +518,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                   alignment: Alignment.topRight,
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.2,
-                    margin: EdgeInsets.only(top: 2, right: 2),
+                    margin: EdgeInsets.only(top: 1, right: 2),
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -469,40 +535,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               ),
             ],
           ),
-          Text(
-            "Today's (${DateFormat('dd-MM-yyyy').format(DateTime.now())}) Transactions",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 16),
+          // Text(
+          //   "Today's (${DateFormat('dd-MM-yyyy').format(DateTime.now())}) Transactions",
+          //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // ),
+          // SizedBox(height: 16),
           // Wrap the DataTable, buttons, and related text inside a Container
           Container(
-            width: double.infinity, // Make the container as wide as the screen
+            width: double.infinity,
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal, // Allow horizontal scrolling
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Text('Transaction ID')),
-                  DataColumn(label: Text('Date')),
-                  DataColumn(label: Text('Item Name')),
-                  DataColumn(label: Text('Qty')),
-                  DataColumn(label: Text('Cost')),
-                  DataColumn(label: Text('Sales Price')),
-                ],
-                rows: filteredItems
-                    .map(
-                      (item) => DataRow(
-                        cells: [
-                          DataCell(Text(item['transactionId'])),
-                          DataCell(Text(item['date'])),
-                          DataCell(Text(item['description'])),
-                          DataCell(Text(item['exp'])),
-                          DataCell(Text(item['amount'].toStringAsFixed(2))),
-                          DataCell(Text(item['pMethod'])),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
+              scrollDirection: Axis.horizontal,
+              child: widget.dataTable, // Use the custom data table widget
             ),
           ),
           SizedBox(height: 16),
@@ -556,9 +599,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               ),
             ],
           ),
-          SizedBox(height: 16),
+const SizedBox(height: 16),
         ],
+        
       ),
+      
     );
   }
 

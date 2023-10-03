@@ -11,7 +11,6 @@
 // import 'dart:io';
 // import 'dart:math';
 
-
 //   // Function to generate a random 5-character alphanumeric Ref No
 // // Function to generate a random 5-character alphanumeric Ref No
 //   static String _generateRandomRefNo() {
@@ -33,9 +32,6 @@
 //           itemDate.isBefore(toDate!.add(Duration(days: 1)));
 //     }).toList();
 //   }
-
-
-
 
 //   int currentPage = 1;
 //   int itemsPerPage = 5;
@@ -204,10 +200,7 @@
 //       'pMethod': 'Credit Card',
 //     },
 
-
-
 //     // Add more items here...
-
 
 //   ];
 
@@ -241,7 +234,6 @@
 //     final startIndex = (currentPage - 1) * itemsPerPage;
 //     return items.skip(startIndex).take(itemsPerPage).toList();
 //   }
-
 
 //   int get totalItems => items.length;
 //   int get totalPages => (totalItems / itemsPerPage).ceil();
@@ -827,9 +819,6 @@
 //   }
 // }
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:my_desktop_app/components/product.dart';
 import 'package:my_desktop_app/components/cart_panel.dart';
@@ -849,6 +838,7 @@ import 'package:provider/provider.dart';
 import 'package:my_desktop_app/components/providers/product_cart_provider.dart';
 import 'package:my_desktop_app/components/dashboard_widget.dart';
 import 'package:my_desktop_app/data_lists.dart';
+import 'package:my_desktop_app/components/custom_table.dart';
 
 class ExpenseDashboard extends StatefulWidget {
   @override
@@ -857,6 +847,9 @@ class ExpenseDashboard extends StatefulWidget {
 
 class _ExpenseDashboardState extends State<ExpenseDashboard> {
   late DashboardWidget dashboardWidget; // Declare dashboardWidget
+  List<Map<String, dynamic>> filteredAndPaginatedData = [];
+    int currentPage = 1;
+  int itemsPerPage = 5;
 
   @override
   void initState() {
@@ -864,9 +857,65 @@ class _ExpenseDashboardState extends State<ExpenseDashboard> {
 
     // Initialize dashboardWidget here
     dashboardWidget = DashboardWidget(
-      title: 'Expense Account',
-      items: expenseData,
-      printReportCallback: _printIncomeStatement,
+      title: 'Inventory Items',
+      items: inventoryData, // Replace with your actual inventory data
+      dataTable: CustomDataTableWidget(
+        data: inventoryData, // Replace 'yourDataList' with your actual data
+        currentPage: currentPage, // Provide the current page
+        itemsPerPage: itemsPerPage, // Provide items per page
+        onPageChanged: (int page) {
+          // Implement your logic for page change here
+          // You can update the 'currentPage' and manage data accordingly
+          // For example:
+          setState(() {
+            currentPage = page;
+          });
+        },
+        totalItems: inventoryData.length, // Provide the total number of items
+
+        // Provide the onUpdateFilter function to handle filtering
+        onUpdateFilter:
+            (String searchText, DateTime? fromDate, DateTime? toDate) {
+          // Implement your filter logic here using the provided parameters.
+          // You can filter your data based on the searchText, fromDate, and toDate.
+          // Once you have the filtered data, you can update your UI accordingly.
+          // For example:
+
+          // 1. Filter your data based on searchText, fromDate, and toDate
+          List<Map<String, dynamic>> filteredData = inventoryData.where((item) {
+            // Implement your filtering logic here.
+            // For example, check if item['name'] contains searchText
+            bool textMatch = item['name'].toString().contains(searchText);
+
+            // Check if the date is within the selected date range
+            bool dateMatch = true;
+            if (fromDate != null && toDate != null) {
+              DateTime itemDate = DateTime.parse(item[
+                  'date']); // Assuming 'date' is a string in ISO 8601 format
+              dateMatch =
+                  itemDate.isAfter(fromDate) && itemDate.isBefore(toDate);
+            }
+
+            // Return true if both text and date match, indicating that this item should be included in the filtered data
+            return textMatch && dateMatch;
+          }).toList();
+
+          // 2. Update your UI with the filtered data
+          setState(() {
+            // Update your data source with the filteredData
+            inventoryData = filteredData;
+          });
+        },
+      ),
+
+      statistic1Value: 200, // Replace with your specific values
+      statistic2Value: 200.0, // Replace with your specific values
+      statistic3Value: 300.0, // Replace with your specific values
+      statistic4Value: 400.0, // Replace with your specific values
+      statistic1Title: 'Total Products', // Replace with your specific title
+      statistic2Title: 'Total Store Value', // Replace with your specific title
+      statistic3Title: 'Out Of Stock', // Replace with your specific title
+      statistic4Title: 'All Categories', // Replace with your specific title
     );
   }
 
@@ -885,9 +934,9 @@ class _ExpenseDashboardState extends State<ExpenseDashboard> {
       case 'Analysis':
         return AnalysisDashboard();
       case 'Expenses':
-         return SingleChildScrollView(
+        return SingleChildScrollView(
           // Wrap SalesDashboard with SingleChildScrollView
-          child:dashboardWidget,
+          child: dashboardWidget,
         );
 
       case 'Custom Report':
@@ -938,5 +987,3 @@ class _ExpenseDashboardState extends State<ExpenseDashboard> {
     );
   }
 }
-
-
