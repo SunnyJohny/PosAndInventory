@@ -873,39 +873,6 @@ class _ExpenseDashboardState extends State<ExpenseDashboard> {
         },
         totalItems: inventoryData.length, // Provide the total number of items
 
-        // Provide the onUpdateFilter function to handle filtering
-        onUpdateFilter:
-            (String searchText, DateTime? fromDate, DateTime? toDate) {
-          // Implement your filter logic here using the provided parameters.
-          // You can filter your data based on the searchText, fromDate, and toDate.
-          // Once you have the filtered data, you can update your UI accordingly.
-          // For example:
-
-          // 1. Filter your data based on searchText, fromDate, and toDate
-          List<Map<String, dynamic>> filteredData = inventoryData.where((item) {
-            // Implement your filtering logic here.
-            // For example, check if item['name'] contains searchText
-            bool textMatch = item['name'].toString().contains(searchText);
-
-            // Check if the date is within the selected date range
-            bool dateMatch = true;
-            if (fromDate != null && toDate != null) {
-              DateTime itemDate = DateTime.parse(item[
-                  'date']); // Assuming 'date' is a string in ISO 8601 format
-              dateMatch =
-                  itemDate.isAfter(fromDate) && itemDate.isBefore(toDate);
-            }
-
-            // Return true if both text and date match, indicating that this item should be included in the filtered data
-            return textMatch && dateMatch;
-          }).toList();
-
-          // 2. Update your UI with the filtered data
-          setState(() {
-            // Update your data source with the filteredData
-            inventoryData = filteredData;
-          });
-        },
       ),
 
       statistic1Value: 200, // Replace with your specific values

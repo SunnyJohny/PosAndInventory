@@ -8,7 +8,7 @@ class CustomDataTableWidget extends StatefulWidget {
   final int itemsPerPage;
   final ValueChanged<int> onPageChanged;
   final int totalItems;
-  final Function(String, DateTime?, DateTime?) onUpdateFilter; // Add this line
+ // Add this line
 
   CustomDataTableWidget({
     required this.data,
@@ -16,7 +16,7 @@ class CustomDataTableWidget extends StatefulWidget {
     required this.itemsPerPage,
     required this.onPageChanged,
     required this.totalItems,
-    required this.onUpdateFilter, // Add this line
+   
   });
 
   List<Map<String, dynamic>> getPaginatedData() {
@@ -184,7 +184,7 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     if (selectedDate != null) {
       setState(() {
         fromDate = selectedDate;
-        widget.onUpdateFilter(_searchText, fromDate, toDate);
+        // widget.onUpdateFilter(_searchText, fromDate, toDate);
       });
     }
   }
@@ -200,7 +200,7 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     if (selectedDate != null) {
       setState(() {
         toDate = selectedDate;
-        widget.onUpdateFilter(_searchText, fromDate, toDate);
+        
       });
     }
   }
