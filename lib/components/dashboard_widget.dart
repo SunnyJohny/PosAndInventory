@@ -422,7 +422,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        
         children: [
           Padding(
             padding: EdgeInsets.only(left: 16),
@@ -435,46 +434,45 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           Row(
             children: [
               _buildStatCard(
-                widget.statistic1Title, // Use the passed title
+                widget.statistic1Title,
                 '₦${widget.statistic1Value.toStringAsFixed(2)}',
                 Icons.trending_up,
                 Colors.blue,
               ),
               SizedBox(width: 16),
               _buildStatCard(
-                widget.statistic2Title, // Use the passed title
+                widget.statistic2Title,
                 '₦${widget.statistic2Value.toStringAsFixed(2)}',
-
                 Icons.receipt,
                 Colors.orange,
               ),
               SizedBox(width: 16),
               _buildStatCard(
-                widget.statistic3Title, // Use the passed title
+                widget.statistic3Title,
                 '₦${widget.statistic3Value.toStringAsFixed(2)}',
-                Icons.money_off, // Updated icon
+                Icons.money_off,
                 Colors.green,
               ),
               _buildStatCard(
-                widget.statistic4Title, // Use the passed title
+                widget.statistic4Title,
                 '₦${widget.statistic4Value.toStringAsFixed(2)}',
-                Icons.assignment, // Updated icon
+                Icons.assignment,
                 Color.fromARGB(255, 133, 50, 249),
               ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 8),
           Divider(),
-          Row(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Sales By Time Period :  ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
+              SizedBox(height: 8),
               Row(
                 children: [
+                  Text(
+                    'Sales By Time Period :  ',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                   Text('FROM: '),
                   GestureDetector(
                     onTap: () => _selectFromDate(context),
@@ -492,7 +490,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       ],
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 8),
                   Text('TO: '),
                   GestureDetector(
                     onTap: () => _selectToDate(context),
@@ -510,42 +508,34 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       ],
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    margin: EdgeInsets.only(top: 1, right: 2),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          _searchText = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Search Sales By Product',
-                        prefixIcon: Icon(Icons.search),
+                  SizedBox(width: 16),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      margin: EdgeInsets.only(top: 1, left: 204),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            _searchText = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Search Sales By Product',
+                          prefixIcon: Icon(Icons.search),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-          // Text(
-          //   "Today's (${DateFormat('dd-MM-yyyy').format(DateTime.now())}) Transactions",
-          //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          // ),
-          // SizedBox(height: 16),
-          // Wrap the DataTable, buttons, and related text inside a Container
-          Container(
+          SizedBox(
             width: double.infinity,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: widget.dataTable, // Use the custom data table widget
+              child: widget.dataTable,
             ),
           ),
           SizedBox(height: 16),
@@ -599,11 +589,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               ),
             ],
           ),
-const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
-        
       ),
-      
     );
   }
 

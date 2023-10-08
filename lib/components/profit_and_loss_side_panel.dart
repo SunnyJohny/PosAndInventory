@@ -19,7 +19,7 @@ class ProfitAndLossReportSidePanel extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(16),
+              // padding: EdgeInsets.all(16),
               child: Column(
                 children: [
                   Container(

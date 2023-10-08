@@ -3,67 +3,58 @@ import 'package:intl/intl.dart';
 import 'package:my_desktop_app/components/side_panel_items.dart';
 import 'package:my_desktop_app/components/side_panel.dart';
 
-
-
 class HomePage extends StatelessWidget {
-
-
-
-
 // Now, you can use the `sidePanel` widget in your UI.
-
 
   @override
   Widget build(BuildContext context) {
     var sidePanelItems = [
-  SidePanelItem(
-    icon: Icons.inventory,
-    title: 'Inventory',
-    onTap: () {
-      // Handle inventory click
-    },
-  ),
-  SidePanelItem(
-    icon: Icons.shopping_cart,
-    title: 'Products Page',
-    onTap: () {
-      // Navigate to the POS page
-      Navigator.pushNamed(context, '/pos');
-    },
-  ),
-  SidePanelItem(
-    icon: Icons.bar_chart,
-    title: 'Reports',
-    onTap: () {
-      // Handle reports click
-    },
-  ),
-  SidePanelItem(
-    icon: Icons.person,
-    title: 'User Profile',
-    onTap: () {
-      // Handle user profile click
-    },
-  ),
-  SidePanelItem(
-    icon: Icons.settings,
-    title: 'Settings',
-    onTap: () {
-      // Handle settings click
-    },
-  ),
-  SidePanelItem(
-    icon: Icons.logout,
-    title: 'Logout',
-    onTap: () {
-      // Handle logout click
-      // After logout, navigate back to the login page
-      Navigator.pushReplacementNamed(context, '/login');
-    },
-  ),
-];
-
-
+      SidePanelItem(
+        icon: Icons.inventory,
+        title: 'Inventory',
+        onTap: () {
+          // Handle inventory click
+        },
+      ),
+      SidePanelItem(
+        icon: Icons.shopping_cart,
+        title: 'Products Page',
+        onTap: () {
+          // Navigate to the POS page
+          Navigator.pushNamed(context, '/pos');
+        },
+      ),
+      SidePanelItem(
+        icon: Icons.bar_chart,
+        title: 'Reports',
+        onTap: () {
+          // Handle reports click
+        },
+      ),
+      SidePanelItem(
+        icon: Icons.person,
+        title: 'User Profile',
+        onTap: () {
+          // Handle user profile click
+        },
+      ),
+      SidePanelItem(
+        icon: Icons.settings,
+        title: 'Settings',
+        onTap: () {
+          // Handle settings click
+        },
+      ),
+      SidePanelItem(
+        icon: Icons.logout,
+        title: 'Logout',
+        onTap: () {
+          // Handle logout click
+          // After logout, navigate back to the login page
+          Navigator.pushReplacementNamed(context, '/login');
+        },
+      ),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -80,7 +71,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Row(
         children: [
-          SidePanel(items: sidePanelItems),// Panel on the left side
+          SidePanel(items: sidePanelItems), // Panel on the left side
           Expanded(
             child: Center(
               child: Column(

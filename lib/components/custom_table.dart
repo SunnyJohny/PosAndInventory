@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class CustomDataTableWidget extends StatefulWidget {
   final List<Map<String, dynamic>> data;
   final int currentPage;
   final int itemsPerPage;
   final ValueChanged<int> onPageChanged;
   final int totalItems;
- // Add this line
+  // Add this line
 
   CustomDataTableWidget({
     required this.data,
@@ -16,7 +15,6 @@ class CustomDataTableWidget extends StatefulWidget {
     required this.itemsPerPage,
     required this.onPageChanged,
     required this.totalItems,
-   
   });
 
   List<Map<String, dynamic>> getPaginatedData() {
@@ -53,7 +51,8 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     widget.data[0].keys.forEach((key) {
       dataColumns.add(DataColumn(
         label: Text(
-          key[0].toUpperCase() + key.substring(1), // Capitalize the first letter
+          key[0].toUpperCase() +
+              key.substring(1), // Capitalize the first letter
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ));
@@ -72,104 +71,9 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
       cellBuilders.add(cells);
     });
 
-    return Column(
-      children: [
-        // Row(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     Text(
-        //       'Sales By Time Period :  ',
-        //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        //     ),
-        //     SizedBox(height: 16),
-        //     Row(
-        //       children: [
-        //         Text('FROM: '),
-        //         GestureDetector(
-        //           onTap: () => _selectFromDate(context),
-        //           child: Row(
-        //             children: [
-        //               Icon(Icons.calendar_today),
-        //               SizedBox(width: 8),
-        //               Text(
-        //                 fromDate != null
-        //                     ? DateFormat('dd-MM-yyyy').format(fromDate!)
-        //                     : 'Select Date',
-        //                 style: TextStyle(decoration: TextDecoration.underline),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //         SizedBox(width: 16),
-        //         Text('TO: '),
-        //         GestureDetector(
-        //           onTap: () => _selectToDate(context),
-        //           child: Row(
-        //             children: [
-        //               Icon(Icons.calendar_today),
-        //               SizedBox(width: 8),
-        //               Text(
-        //                 toDate != null
-        //                     ? DateFormat('dd-MM-yyyy').format(toDate!)
-        //                     : 'Select Date',
-        //                 style: TextStyle(decoration: TextDecoration.underline),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     SizedBox(height: 8),
-        //     Expanded(
-        //       child: Align(
-        //         alignment: Alignment.topRight,
-        //         child: Container(
-        //           width: MediaQuery.of(context).size.width * 0.2,
-        //           margin: EdgeInsets.only(top: 1, right: 2),
-        //           child: TextField(
-        //             onChanged: (value) {
-        //               setState(() {
-        //                 _searchText = value;
-        //                 widget.onUpdateFilter(_searchText, fromDate, toDate);
-        //               });
-        //             },
-        //             decoration: InputDecoration(
-        //               hintText: 'Search Sales By Product',
-        //               prefixIcon: Icon(Icons.search),
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        DataTable(
-          columns: dataColumns,
-          rows: cellBuilders.map((cells) => DataRow(cells: cells)).toList(),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                if (widget.currentPage > 1) {
-                  widget.onPageChanged(widget.currentPage - 1);
-                }
-              },
-            ),
-            Text('Page ${widget.currentPage} of ${(widget.totalItems / widget.itemsPerPage).ceil()}'),
-            IconButton(
-              icon: Icon(Icons.arrow_forward),
-              onPressed: () {
-                if (widget.currentPage < (widget.totalItems / widget.itemsPerPage).ceil()) {
-                  widget.onPageChanged(widget.currentPage + 1);
-                }
-              },
-            ),
-          ],
-        ),
-      ],
+    return DataTable(
+      columns: dataColumns,
+      rows: cellBuilders.map((cells) => DataRow(cells: cells)).toList(),
     );
   }
 
@@ -200,7 +104,6 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     if (selectedDate != null) {
       setState(() {
         toDate = selectedDate;
-        
       });
     }
   }

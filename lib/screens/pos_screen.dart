@@ -241,7 +241,7 @@ class PosScreen extends StatelessWidget {
                       builder: (context, provider, _) {
                         return Container(
                           // Wrap the product list in a Container
-                          padding: EdgeInsets.all(16), // Add padding here
+                          // padding: EdgeInsets.all(16), // Add padding here
                           child: GridView.count(
                             crossAxisCount: 8,
                             children: provider.products.map((product) {
