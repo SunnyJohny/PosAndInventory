@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_desktop_app/components/providers/product_cart_provider.dart';
+import 'package:my_desktop_app/components/providers/inventory_data_provider.dart';
+
 
 import 'package:provider/provider.dart';
 import 'package:my_desktop_app/screens/home_screen.dart' as HomeScreen;
@@ -17,6 +19,9 @@ void main() {
       providers: [
         ChangeNotifierProvider<ProductCartProvider>(
           create: (_) => ProductCartProvider(),
+        ),
+        ChangeNotifierProvider<InventoryDataProvider>(
+          create: (_) => InventoryDataProvider(),
         ),
         // Add more provider instances here as needed
       ],

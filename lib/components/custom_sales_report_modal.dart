@@ -275,126 +275,126 @@ class CustomSalesReportModal extends StatelessWidget {
   final now = DateTime.now();
   final receiptNumber = generateReportNumber();
 
-  pdf.addPage(
-    pw.MultiPage(
-      build: (pw.Context context) {
-        return [
-          pw.Container(
-            padding: pw.EdgeInsets.all(16),
-            child: pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.SizedBox(height: 10),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text('Sub-Total: \₦${total.toStringAsFixed(2)}',
-                            style: pw.TextStyle(fontSize: 16)),
-                        pw.Text('Tax: \₦${(total * 0.15).toStringAsFixed(2)}',
-                            style: pw.TextStyle(fontSize: 16)),
-                        pw.Text(
-                            'Total: \₦${(total + (total * 0.15)).toStringAsFixed(2)}',
-                            style: pw.TextStyle(
-                                fontSize: 18, fontWeight: pw.FontWeight.bold)),
-                      ],
-                    ),
-                    pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.end,
-                      children: [
-                        pw.Text('Attendant: $attendantName',
-                            style: pw.TextStyle(fontSize: 16)),
-                        pw.Text('Report Number: $receiptNumber',
-                            style: pw.TextStyle(fontSize: 16)),
-                        pw.Text('Date: ${DateFormat('MM/dd/yyyy').format(now)}',
-                            style: pw.TextStyle(fontSize: 16)),
-                        pw.Text('Time: ${DateFormat('HH:mm').format(now)}',
-                            style: pw.TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                  ],
-                ),
-                pw.SizedBox(height: 20),
-                pw.Divider(),
-                pw.SizedBox(height: 10),
-                pw.Text('Report',
-                    style: pw.TextStyle(
-                        fontSize: 20, fontWeight: pw.FontWeight.bold)),
-                pw.SizedBox(height: 10),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text('Item',
-                        style: pw.TextStyle(
-                            fontSize: 16, fontWeight: pw.FontWeight.bold)),
-                    pw.Text('Qty',
-                        style: pw.TextStyle(
-                            fontSize: 16, fontWeight: pw.FontWeight.bold)),
-                    pw.Text('Unit Price',
-                        style: pw.TextStyle(
-                            fontSize: 16, fontWeight: pw.FontWeight.bold)),
-                    pw.Text('Amount',
-                        style: pw.TextStyle(
-                            fontSize: 16, fontWeight: pw.FontWeight.bold)),
-                  ],
-                ),
-                pw.SizedBox(height: 10),
-                pw.Divider(),
-                pw.SizedBox(height: 10),
-                pw.ListView.builder(
-                  itemCount: cartItems.length,
-                  itemBuilder: (pw.Context context, int index) {
-                    Map<String, dynamic> item = cartItems[index];
-                    String itemName = item['itemname'];
-                    int quantity = item['quantity'];
-                    double unitPrice = item['amount'];
-                    double amount = quantity * unitPrice;
+  // pdf.addPage(
+  //   pw.MultiPage(
+  //     build: (pw.Context context) {
+  //       return [
+  //         pw.Container(
+  //           padding: pw.EdgeInsets.all(16),
+  //           child: pw.Column(
+  //             crossAxisAlignment: pw.CrossAxisAlignment.start,
+  //             children: [
+  //               pw.SizedBox(height: 10),
+  //               pw.Row(
+  //                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   pw.Column(
+  //                     crossAxisAlignment: pw.CrossAxisAlignment.start,
+  //                     children: [
+  //                       pw.Text('Sub-Total: \₦${total.toStringAsFixed(2)}',
+  //                           style: pw.TextStyle(fontSize: 16)),
+  //                       pw.Text('Tax: \₦${(total * 0.15).toStringAsFixed(2)}',
+  //                           style: pw.TextStyle(fontSize: 16)),
+  //                       pw.Text(
+  //                           'Total: \₦${(total + (total * 0.15)).toStringAsFixed(2)}',
+  //                           style: pw.TextStyle(
+  //                               fontSize: 18, fontWeight: pw.FontWeight.bold)),
+  //                     ],
+  //                   ),
+  //                   pw.Column(
+  //                     crossAxisAlignment: pw.CrossAxisAlignment.end,
+  //                     children: [
+  //                       pw.Text('Attendant: $attendantName',
+  //                           style: pw.TextStyle(fontSize: 16)),
+  //                       pw.Text('Report Number: $receiptNumber',
+  //                           style: pw.TextStyle(fontSize: 16)),
+  //                       pw.Text('Date: ${DateFormat('MM/dd/yyyy').format(now)}',
+  //                           style: pw.TextStyle(fontSize: 16)),
+  //                       pw.Text('Time: ${DateFormat('HH:mm').format(now)}',
+  //                           style: pw.TextStyle(fontSize: 16)),
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //               pw.SizedBox(height: 20),
+  //               pw.Divider(),
+  //               pw.SizedBox(height: 10),
+  //               pw.Text('Report',
+  //                   style: pw.TextStyle(
+  //                       fontSize: 20, fontWeight: pw.FontWeight.bold)),
+  //               pw.SizedBox(height: 10),
+  //               pw.Row(
+  //                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   pw.Text('Item',
+  //                       style: pw.TextStyle(
+  //                           fontSize: 16, fontWeight: pw.FontWeight.bold)),
+  //                   pw.Text('Qty',
+  //                       style: pw.TextStyle(
+  //                           fontSize: 16, fontWeight: pw.FontWeight.bold)),
+  //                   pw.Text('Unit Price',
+  //                       style: pw.TextStyle(
+  //                           fontSize: 16, fontWeight: pw.FontWeight.bold)),
+  //                   pw.Text('Amount',
+  //                       style: pw.TextStyle(
+  //                           fontSize: 16, fontWeight: pw.FontWeight.bold)),
+  //                 ],
+  //               ),
+  //               pw.SizedBox(height: 10),
+  //               pw.Divider(),
+  //               pw.SizedBox(height: 10),
+  //               pw.ListView.builder(
+  //                 itemCount: cartItems.length,
+  //                 itemBuilder: (pw.Context context, int index) {
+  //                   Map<String, dynamic> item = cartItems[index];
+  //                   String itemName = item['itemname'];
+  //                   int quantity = item['quantity'];
+  //                   double unitPrice = item['amount'];
+  //                   double amount = quantity * unitPrice;
 
-                    return pw.Padding(
-                      padding: pw.EdgeInsets.symmetric(vertical: 4),
-                      child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Expanded(
-                            flex: 3,
-                            child: pw.Text(itemName,
-                                style: pw.TextStyle(fontSize: 16)),
-                          ),
-                          pw.Expanded(
-                            flex: 1,
-                            child: pw.Text(quantity.toString(),
-                                style: pw.TextStyle(fontSize: 16)),
-                          ),
-                          pw.Expanded(
-                            flex: 2,
-                            child: pw.Text(
-                                '\₦${unitPrice.toStringAsFixed(2)}',
-                                style: pw.TextStyle(fontSize: 16)),
-                          ),
-                          pw.Expanded(
-                            flex: 2,
-                            child: pw.Text('₦${amount.toStringAsFixed(2)}',
-                                style: pw.TextStyle(fontSize: 16)),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                pw.SizedBox(height: 20),
-                pw.Divider(),
-                pw.Text('This is your report for the selected date!',
-                    style: pw.TextStyle(
-                        fontSize: 16, fontStyle: pw.FontStyle.italic)),
-              ],
-            ),
-          ),
-        ];
-      },
-    ),
-  );
+  //                   return pw.Padding(
+  //                     padding: pw.EdgeInsets.symmetric(vertical: 4),
+  //                     child: pw.Row(
+  //                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         pw.Expanded(
+  //                           flex: 3,
+  //                           child: pw.Text(itemName,
+  //                               style: pw.TextStyle(fontSize: 16)),
+  //                         ),
+  //                         pw.Expanded(
+  //                           flex: 1,
+  //                           child: pw.Text(quantity.toString(),
+  //                               style: pw.TextStyle(fontSize: 16)),
+  //                         ),
+  //                         pw.Expanded(
+  //                           flex: 2,
+  //                           child: pw.Text(
+  //                               '\₦${unitPrice.toStringAsFixed(2)}',
+  //                               style: pw.TextStyle(fontSize: 16)),
+  //                         ),
+  //                         pw.Expanded(
+  //                           flex: 2,
+  //                           child: pw.Text('₦${amount.toStringAsFixed(2)}',
+  //                               style: pw.TextStyle(fontSize: 16)),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   );
+  //                 },
+  //               ),
+  //               pw.SizedBox(height: 20),
+  //               pw.Divider(),
+  //               pw.Text('This is your report for the selected date!',
+  //                   style: pw.TextStyle(
+  //                       fontSize: 16, fontStyle: pw.FontStyle.italic)),
+  //             ],
+  //           ),
+  //         ),
+  //       ];
+  //     },
+  //   ),
+  // );
 
   final output = await getTemporaryDirectory();
   final file = File('${output.path}/receipt.pdf');
