@@ -6,15 +6,26 @@ class CustomDataTableWidget extends StatefulWidget {
   final int currentPage;
   final int itemsPerPage;
   final ValueChanged<int> onPageChanged;
-  final int totalItems;
-  // Add this line
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final ValueChanged<DateTime?> onFromDateSelected;
+  final ValueChanged<DateTime?> onToDateSelected;
+  final String searchText;
+  final ValueChanged<String> onSearchTextChanged;
+   final int totalItems; // Define the totalItems parameter
 
   CustomDataTableWidget({
     required this.data,
     required this.currentPage,
     required this.itemsPerPage,
     required this.onPageChanged,
-    required this.totalItems,
+    required this.fromDate,
+    required this.toDate,
+    required this.onFromDateSelected,
+    required this.onToDateSelected,
+    required this.searchText,
+    required this.onSearchTextChanged,
+    required this.totalItems, // Define the totalItems parameter
   });
 
   List<Map<String, dynamic>> getPaginatedData() {
@@ -88,7 +99,7 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     if (selectedDate != null) {
       setState(() {
         fromDate = selectedDate;
-        // widget.onUpdateFilter(_searchText, fromDate, toDate);
+        widget.onFromDateSelected(selectedDate); // Notify the parent widget
       });
     }
   }
@@ -104,6 +115,7 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     if (selectedDate != null) {
       setState(() {
         toDate = selectedDate;
+        widget.onToDateSelected(selectedDate); // Notify the parent widget
       });
     }
   }

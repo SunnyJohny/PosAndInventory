@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-
-class InventoryDataProvider extends ChangeNotifier {
-  List<Map<String, dynamic>> inventoryData = [
+class InventoryDataRepository {
+  static List<Map<String, dynamic>> inventoryData = [
     {
       'sn': '1',
       'date': '2023-09-20',
@@ -132,78 +130,12 @@ class InventoryDataProvider extends ChangeNotifier {
       'sales price': '\$550',
       'category': 'Category 2',
     },
-    // Add more data if needed
+    // Add more items here...
   ];
-  // Variables for date filtering
-  DateTime? fromDate;
-  DateTime? toDate;
-  String searchText = '';
 
-  // Pagination variables
-  int currentPage = 1;
-  int itemsPerPage = 10; // Adjust this based on your preference
-
-  // Previous page
-  void previousPage() {
-    if (currentPage > 1) {
-      currentPage--;
-      notifyListeners();
-    }
+  // Method to fetch inventory data
+  static List<Map<String, dynamic>> fetchInventoryData() {
+    // You can add logic here to fetch data from other sources if needed.
+    return inventoryData;
   }
-
-  // Next page
-  void nextPage() {
-    final maxPage = (inventoryData.length / itemsPerPage).ceil();
-    if (currentPage < maxPage) {
-      currentPage++;
-      notifyListeners();
-    }
-  }
-
-  // Apply date filtering
-  void filterByDate(DateTime? from, DateTime? to) {
-    fromDate = from;
-    toDate = to;
-    currentPage = 1; // Reset page to 1 when applying filters
-    notifyListeners();
-  }
-
-  // Search by item name
-  void searchByItemName(String query) {
-    searchText = query;
-    currentPage = 1; // Reset page to 1 when searching
-    notifyListeners();
-  }
-
-  // Getter method for paginated and filtered data
-  List<Map<String, dynamic>> get paginatedAndFilteredData {
-    // Add your date and search filtering logic here
-    List<Map<String, dynamic>> filteredData = List.from(inventoryData);
-
-    if (fromDate != null && toDate != null) {
-      filteredData = filteredData.where((item) {
-        final itemDate = DateTime.parse(item['date']);
-        return itemDate.isAfter(fromDate!) &&
-            itemDate.isBefore(toDate!.add(Duration(days: 1)));
-      }).toList();
-    }
-
-    if (searchText.isNotEmpty) {
-      filteredData = filteredData.where((item) {
-        return item['name'].toLowerCase().contains(searchText.toLowerCase());
-      }).toList();
-    }
-
-    final startIndex = (currentPage - 1) * itemsPerPage;
-    return filteredData.skip(startIndex).take(itemsPerPage).toList();
-  }
-
- 
-
-  Future<void> fetchInventoryData() async {
-    // Fetching data from a repository can be added here if needed.
-    notifyListeners();
-  }
-
-  
 }

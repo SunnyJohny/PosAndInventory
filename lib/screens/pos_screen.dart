@@ -6,7 +6,7 @@ import 'package:my_desktop_app/components/user.dart';
 
 import 'package:my_desktop_app/components/side_panel_items.dart';
 import 'package:my_desktop_app/components/dashboard_widget.dart';
-import 'package:my_desktop_app/data_lists.dart';
+
 import 'package:provider/provider.dart';
 import 'package:my_desktop_app/components/providers/product_cart_provider.dart';
 import 'package:my_desktop_app/screens/report/inventory_screen.dart';
@@ -32,9 +32,9 @@ class ProductTile extends StatefulWidget {
 
 class _ProductTileState extends State<ProductTile> {
   bool isHovered = false;
-  void _printIncomeStatement() {
-    print(expenseData);
-  }
+  // void _printIncomeStatement() {
+  //   print(expenseData);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +113,9 @@ class PosScreen extends StatelessWidget {
 // To render the selected widget, call renderSelectedWidget()
 // Widget selectedWidget = screenContent.renderSelectedWidget();
 
-  void _printIncomeStatement() {
-    print(expenseData);
-  }
+  // void _printIncomeStatement() {
+  //   print(expenseData);
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -9,10 +9,11 @@ import 'package:my_desktop_app/components/custom_table.dart';
 
 import 'package:my_desktop_app/screens/report/add_product_screen.dart';
 import 'package:my_desktop_app/components/dashboard_widget.dart';
-import 'package:my_desktop_app/data_lists.dart';
+// import 'package:my_desktop_app/data_lists.dart';
 
 import 'package:provider/provider.dart';
-import 'package:my_desktop_app/components/providers/product_cart_provider.dart';
+import 'package:my_desktop_app/components/providers/inventory_data_provider.dart';
+import 'package:my_desktop_app/data/inventory_data_repository.dart';
 
 class InventoryScreen extends StatefulWidget {
   @override
@@ -29,36 +30,28 @@ class _InventoryScreenState extends State<InventoryScreen> {
   bool isToDateSelected = false;
   String _searchText = '';
 
-  Future<void> _selectFromDate(BuildContext context) async {
-    final DateTime? selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
+  List<Map<String, dynamic>> filteredAndPaginatedData = [];
+  List<Map<String, dynamic>> items = [];
 
-    if (selectedDate != null) {
-      setState(() {
-        fromDate = selectedDate;
-      });
-    }
+ 
+Future<void> _selectFromDate(DateTime? selectedDate) async {
+  if (selectedDate != null) {
+    setState(() {
+      fromDate = selectedDate;
+    });
   }
+}
 
-  Future<void> _selectToDate(BuildContext context) async {
-    final DateTime? selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
 
-    if (selectedDate != null) {
-      setState(() {
-        toDate = selectedDate;
-        isToDateSelected = true; // Set the flag when "To Date" is selected
-      });
-    }
+  Future<void> _selectToDate(DateTime? selectedDate) async {
+  if (selectedDate != null) {
+    setState(() {
+      toDate = selectedDate;
+      isToDateSelected = true; // Set the flag when "To Date" is selected
+    });
   }
+}
+
 
   void _printIncomeStatementWrapper() {
     // Call your existing _printIncomeStatement function here
@@ -75,10 +68,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
       return dateB.compareTo(dateA);
     });
   }
-
-  // Add a field to store the filtered and paginated data
-  List<Map<String, dynamic>> filteredAndPaginatedData = [];
-  List<Map<String, dynamic>> items = inventoryData;
 
   // Update the paginatedItems getter method to handle filtering and pagination
   List<Map<String, dynamic>> get paginatedItems {
@@ -117,6 +106,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
   }
 
   Widget renderSelectedWidget() {
+
+final inventoryDataProvider = Provider.of<InventoryDataProvider>(context);
+final inventoryData = inventoryDataProvider.inventoryData;
     switch (selectedItem) {
       case 'Inventory Report':
         return Text('Render Inventory Report Widget here');
@@ -130,14 +122,15 @@ class _InventoryScreenState extends State<InventoryScreen> {
         return BugReportWidget();
       case 'Dashboard':
         return SingleChildScrollView(
+          
           child: DashboardWidget(
-  title: 'Inventory Items',
-  items: inventoryData, // Replace with your actual inventory data
-dataTable: CustomDataTableWidget(
-  data: inventoryData, // Replace 'yourDataList' with your actual data
-  currentPage: currentPage, // Provide the current page
-  itemsPerPage: itemsPerPage, // Provide items per page
-  onPageChanged  : (int page) {
+            title: 'Inventory Items',
+            items: inventoryData, // Replace with your actual inventory data
+            dataTable: CustomDataTableWidget(
+  data: inventoryData,  // suppposed filteredAndPaginatedData,
+  currentPage: currentPage,
+  itemsPerPage: itemsPerPage,
+  onPageChanged: (int page) {
     // Implement your logic for page change here
     // You can update the 'currentPage' and manage data accordingly
     // For example:
@@ -145,20 +138,34 @@ dataTable: CustomDataTableWidget(
       currentPage = page;
     });
   },
-  totalItems: inventoryData.length, // Provide the total number of items
-
-  
+  fromDate: fromDate, // Pass the fromDate parameter
+  toDate: toDate, // Pass the toDate parameter
+ onFromDateSelected: _selectFromDate, // Pass the function without arguments
+  onToDateSelected: _selectToDate, // Pass the function without arguments
+  searchText: _searchText, // Pass the searchText parameter
+  onSearchTextChanged: (String text) {
+    // Implement your logic for handling search text changes
+    // For example, updating _searchText
+    setState(() {
+      _searchText = text;
+    });
+  },
+  totalItems: filteredAndPaginatedData.length, // Provide the total number of items
 ),
 
-  statistic1Value: 200, // Replace with your specific values
-  statistic2Value: 200.0, // Replace with your specific values
-  statistic3Value: 300.0, // Replace with your specific values
-  statistic4Value: 400.0, // Replace with your specific values
-  statistic1Title: 'Total Products', // Replace with your specific title
-  statistic2Title: 'Total Store Value', // Replace with your specific title
-  statistic3Title: 'Out Of Stock', // Replace with your specific title
-  statistic4Title: 'All Categories', // Replace with your specific title
-),
+
+            statistic1Value: 200, // Replace with your specific values
+            statistic2Value: 200.0, // Replace with your specific values
+            statistic3Value: 300.0, // Replace with your specific values
+            statistic4Value: 400.0, // Replace with your specific values
+            statistic1Title:
+                'Total Products', // Replace with your specific title
+            statistic2Title:
+                'Total Store Value', // Replace with your specific title
+            statistic3Title: 'Out Of Stock', // Replace with your specific title
+            statistic4Title:
+                'All Categories', // Replace with your specific title
+          ),
         );
 
       default:
@@ -167,11 +174,12 @@ dataTable: CustomDataTableWidget(
   }
 
   void _printIncomeStatement() {
-    print(expenseData);
+    print(items);
   }
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
         title: Text('Inventory Report'),
