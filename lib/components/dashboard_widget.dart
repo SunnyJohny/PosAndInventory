@@ -17,32 +17,24 @@ import 'package:pdf/widgets.dart' as pw;
 class DashboardWidget extends StatefulWidget {
   final String title;
   final List<Map<String, dynamic>> items;
-  final CustomDataTableWidget dataTable; // CustomDataTable as a parameter
-
-  // General and intuitive variable names
-  final double statistic1Value; // E.g., Total Revenue
-  final double statistic2Value; // E.g., Cost of Goods Sold
-  final double statistic3Value; // E.g., Operating Expenses
-  final double statistic4Value; // E.g., Total Profit
-
-  // Add these fields to the constructor
-  final String statistic1Title; // E.g., 'Total Revenue'
-  final String statistic2Title; // E.g., 'Cost of Goods Sold'
-  final String statistic3Title; // E.g., 'Operating Expenses'
-  final String statistic4Title; // E.g., 'Total Profit'
+  final CustomDataTableWidget dataTable;
+  final double statistic1Value;
+  final double statistic2Value;
+  final double statistic3Value;
+  final double statistic4Value;
+  final String statistic1Title;
+  final String statistic2Title;
+  final String statistic3Title;
+  final String statistic4Title;
 
   DashboardWidget({
     required this.title,
     required this.items,
-    required this.dataTable, // Include CustomDataTableWidget as a parameter
-
-    // Updated parameter names
+    required this.dataTable,
     required this.statistic1Value,
     required this.statistic2Value,
     required this.statistic3Value,
     required this.statistic4Value,
-
-    // Added parameters for statistic titles
     required this.statistic1Title,
     required this.statistic2Title,
     required this.statistic3Title,
@@ -55,11 +47,40 @@ class DashboardWidget extends StatefulWidget {
 
 class _DashboardWidgetState extends State<DashboardWidget> {
   int currentPage = 1;
-  int itemsPerPage = 5;
-
+  int itemsPerPage = 6;
   DateTime? fromDate;
   DateTime? toDate;
-  bool isToDateSelected = false;
+  String _searchText = '';
+  bool isToDateSelected = false; 
+
+
+    void _handlePageChanged(int page) {
+    setState(() {
+      currentPage = page;
+    });
+  }
+
+  void _handleFromDateSelected(DateTime? date) {
+    setState(() {
+      fromDate = date;
+    });
+  }
+
+  void _handleToDateSelected(DateTime? date) {
+    setState(() {
+      toDate = date;
+    });
+  }
+
+  void _handleSearchTextChanged(String text) {
+    setState(() {
+      _searchText = text;
+    });
+  }
+
+
+
+
 
   Future<void> _selectFromDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -177,7 +198,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 // }
 
   void sortItemsByDate() {
-    widget.items.sort((a, b) {
+    widget.items.sort((b, a) {
       // Convert the date strings to DateTime objects
       DateTime dateA = DateTime.parse(a['date']);
       DateTime dateB = DateTime.parse(b['date']);
@@ -186,6 +207,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       return dateB.compareTo(dateA);
     });
   }
+
+  
 
   // List<Map<String, dynamic>> get paginatedItems {
   //   sortItemsByDate(); // Sort the items before pagination
@@ -415,7 +438,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     return productsSold;
   }
 
-  String _searchText = '';
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -531,11 +554,23 @@ class _DashboardWidgetState extends State<DashboardWidget> {
               ),
             ],
           ),
-          SizedBox(
+                    SizedBox(
             width: double.infinity,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: widget.dataTable,
+              child: CustomDataTableWidget(
+                data: paginatedItems,
+                currentPage: currentPage,
+                itemsPerPage: itemsPerPage,
+                onPageChanged: _handlePageChanged,
+                fromDate: fromDate,
+                toDate: toDate,
+                onFromDateSelected: _handleFromDateSelected,
+                onToDateSelected: _handleToDateSelected,
+                searchText: _searchText,
+                onSearchTextChanged: _handleSearchTextChanged,
+                totalItems: totalItems,
+              ),
             ),
           ),
           SizedBox(height: 16),

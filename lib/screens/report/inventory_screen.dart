@@ -23,7 +23,7 @@ class InventoryScreen extends StatefulWidget {
 class _InventoryScreenState extends State<InventoryScreen> {
   String selectedItem = 'Dashboard'; // Hardcoded selected
   int currentPage = 1;
-  int itemsPerPage = 5;
+  int itemsPerPage = 3;
 
   DateTime? fromDate;
   DateTime? toDate;
@@ -42,15 +42,17 @@ Future<void> _selectFromDate(DateTime? selectedDate) async {
   }
 }
 
-
-  Future<void> _selectToDate(DateTime? selectedDate) async {
+Future<void> _selectToDate(DateTime? selectedDate) async {
   if (selectedDate != null) {
     setState(() {
       toDate = selectedDate;
-      isToDateSelected = true; // Set the flag when "To Date" is selected
     });
   }
 }
+
+
+
+
 
 
   void _printIncomeStatementWrapper() {
@@ -127,9 +129,9 @@ final inventoryData = inventoryDataProvider.inventoryData;
             title: 'Inventory Items',
             items: inventoryData, // Replace with your actual inventory data
             dataTable: CustomDataTableWidget(
-  data: inventoryData,  // suppposed filteredAndPaginatedData,
+  data: inventoryData,
   currentPage: currentPage,
-  itemsPerPage: itemsPerPage,
+  itemsPerPage: 4,
   onPageChanged: (int page) {
     // Implement your logic for page change here
     // You can update the 'currentPage' and manage data accordingly
@@ -150,7 +152,7 @@ final inventoryData = inventoryDataProvider.inventoryData;
       _searchText = text;
     });
   },
-  totalItems: filteredAndPaginatedData.length, // Provide the total number of items
+  totalItems: inventoryData.length, // Provide the total number of items
 ),
 
 

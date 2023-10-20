@@ -28,11 +28,16 @@ class CustomDataTableWidget extends StatefulWidget {
     required this.totalItems, // Define the totalItems parameter
   });
 
-  List<Map<String, dynamic>> getPaginatedData() {
-    final startIndex = (currentPage - 1) * itemsPerPage;
-    final endIndex = startIndex + itemsPerPage;
-    return data.sublist(startIndex, endIndex.clamp(0, data.length));
+List<Map<String, dynamic>> getPaginatedData() {
+  final startIndex = (currentPage - 1) * itemsPerPage;
+  int endIndex = startIndex + itemsPerPage;
+  
+  if (endIndex > data.length) {
+    endIndex = data.length;
   }
+  
+  return data.sublist(startIndex, endIndex);
+}
 
   @override
   _CustomDataTableWidgetState createState() => _CustomDataTableWidgetState();
