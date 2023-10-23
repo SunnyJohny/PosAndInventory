@@ -23,7 +23,7 @@ class InventoryScreen extends StatefulWidget {
 class _InventoryScreenState extends State<InventoryScreen> {
   String selectedItem = 'Dashboard'; // Hardcoded selected
   int currentPage = 1;
-  int itemsPerPage = 3;
+  int itemsPerPage = 6;
 
   DateTime? fromDate;
   DateTime? toDate;
@@ -33,27 +33,21 @@ class _InventoryScreenState extends State<InventoryScreen> {
   List<Map<String, dynamic>> filteredAndPaginatedData = [];
   List<Map<String, dynamic>> items = [];
 
- 
-Future<void> _selectFromDate(DateTime? selectedDate) async {
-  if (selectedDate != null) {
-    setState(() {
-      fromDate = selectedDate;
-    });
+  Future<void> _selectFromDate(DateTime? selectedDate) async {
+    if (selectedDate != null) {
+      setState(() {
+        fromDate = selectedDate;
+      });
+    }
   }
-}
 
-Future<void> _selectToDate(DateTime? selectedDate) async {
-  if (selectedDate != null) {
-    setState(() {
-      toDate = selectedDate;
-    });
+  Future<void> _selectToDate(DateTime? selectedDate) async {
+    if (selectedDate != null) {
+      setState(() {
+        toDate = selectedDate;
+      });
+    }
   }
-}
-
-
-
-
-
 
   void _printIncomeStatementWrapper() {
     // Call your existing _printIncomeStatement function here
@@ -93,9 +87,7 @@ Future<void> _selectToDate(DateTime? selectedDate) async {
       filtered = filtered.where((item) {
         // Customize this part based on your search logic
         // For example, check if the item name contains the search text
-        return item['description']
-            .toLowerCase()
-            .contains(_searchText.toLowerCase());
+        return item['name'].toLowerCase().contains(_searchText.toLowerCase());
       }).toList();
     }
 
@@ -108,9 +100,8 @@ Future<void> _selectToDate(DateTime? selectedDate) async {
   }
 
   Widget renderSelectedWidget() {
-
-final inventoryDataProvider = Provider.of<InventoryDataProvider>(context);
-final inventoryData = inventoryDataProvider.inventoryData;
+    final inventoryDataProvider = Provider.of<InventoryDataProvider>(context);
+    final items = inventoryDataProvider.inventoryData;
     switch (selectedItem) {
       case 'Inventory Report':
         return Text('Render Inventory Report Widget here');
@@ -124,37 +115,37 @@ final inventoryData = inventoryDataProvider.inventoryData;
         return BugReportWidget();
       case 'Dashboard':
         return SingleChildScrollView(
-          
           child: DashboardWidget(
             title: 'Inventory Items',
-            items: inventoryData, // Replace with your actual inventory data
+            items: items, // Replace with your actual inventory data
             dataTable: CustomDataTableWidget(
-  data: inventoryData,
-  currentPage: currentPage,
-  itemsPerPage: 4,
-  onPageChanged: (int page) {
-    // Implement your logic for page change here
-    // You can update the 'currentPage' and manage data accordingly
-    // For example:
-    setState(() {
-      currentPage = page;
-    });
-  },
-  fromDate: fromDate, // Pass the fromDate parameter
-  toDate: toDate, // Pass the toDate parameter
- onFromDateSelected: _selectFromDate, // Pass the function without arguments
-  onToDateSelected: _selectToDate, // Pass the function without arguments
-  searchText: _searchText, // Pass the searchText parameter
-  onSearchTextChanged: (String text) {
-    // Implement your logic for handling search text changes
-    // For example, updating _searchText
-    setState(() {
-      _searchText = text;
-    });
-  },
-  totalItems: inventoryData.length, // Provide the total number of items
-),
-
+              data: paginatedItems,
+              currentPage: currentPage,
+              itemsPerPage: itemsPerPage,
+              onPageChanged: (int page) {
+                // Implement your logic for page change here
+                // You can update the 'currentPage' and manage data accordingly
+                // For example:
+                setState(() {
+                  currentPage = page;
+                });
+              },
+              fromDate: fromDate, // Pass the fromDate parameter
+              toDate: toDate, // Pass the toDate parameter
+              onFromDateSelected:
+                  _selectFromDate, // Pass the function without arguments
+              onToDateSelected:
+                  _selectToDate, // Pass the function without arguments
+              searchText: _searchText, // Pass the searchText parameter
+              onSearchTextChanged: (String text) {
+                // Implement your logic for handling search text changes
+                // For example, updating _searchText
+                setState(() {
+                  _searchText = text;
+                });
+              },
+              totalItems: paginatedItems.length, // Provide the total number of items
+            ),
 
             statistic1Value: 200, // Replace with your specific values
             statistic2Value: 200.0, // Replace with your specific values
@@ -181,7 +172,6 @@ final inventoryData = inventoryDataProvider.inventoryData;
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
         title: Text('Inventory Report'),

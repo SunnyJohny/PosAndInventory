@@ -12,7 +12,7 @@ class CustomDataTableWidget extends StatefulWidget {
   final ValueChanged<DateTime?> onToDateSelected;
   final String searchText;
   final ValueChanged<String> onSearchTextChanged;
-   final int totalItems; // Define the totalItems parameter
+  final int totalItems; // Define the totalItems parameter
 
   CustomDataTableWidget({
     required this.data,
@@ -28,16 +28,22 @@ class CustomDataTableWidget extends StatefulWidget {
     required this.totalItems, // Define the totalItems parameter
   });
 
-List<Map<String, dynamic>> getPaginatedData() {
-  final startIndex = (currentPage - 1) * itemsPerPage;
-  int endIndex = startIndex + itemsPerPage;
-  
-  if (endIndex > data.length) {
-    endIndex = data.length;
+  List<Map<String, dynamic>> getPaginatedData() {
+    int currentPage = 0; // Create a local variable to store currentPage
+
+    if (currentPage < 1) {
+      currentPage = 1; // Ensure currentPage is at least 1
+    }
+    final startIndex = (currentPage - 1) * itemsPerPage;
+    int endIndex = startIndex + itemsPerPage;
+
+    // Ensure endIndex is within valid bounds
+    if (endIndex > data.length) {
+      endIndex = data.length;
+    }
+
+    return data.sublist(startIndex, endIndex);
   }
-  
-  return data.sublist(startIndex, endIndex);
-}
 
   @override
   _CustomDataTableWidgetState createState() => _CustomDataTableWidgetState();
@@ -61,9 +67,9 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
     }
 
     List<DataColumn> dataColumns = [];
-    List<List<DataCell>> cellBuilders = [];
+    List<DataRow> dataRows = [];
 
-    // Generate columns and cell builders dynamically based on the keys of the first item in data
+    // Generate columns dynamically based on the keys of the first item in data
     widget.data[0].keys.forEach((key) {
       dataColumns.add(DataColumn(
         label: Text(
@@ -84,12 +90,12 @@ class _CustomDataTableWidgetState extends State<CustomDataTableWidget> {
           onTap: () {}, // Add onTap to keep the cell interactive
         ));
       });
-      cellBuilders.add(cells);
+      dataRows.add(DataRow(cells: cells));
     });
 
     return DataTable(
       columns: dataColumns,
-      rows: cellBuilders.map((cells) => DataRow(cells: cells)).toList(),
+      rows: dataRows,
     );
   }
 

@@ -132,6 +132,45 @@ class InventoryDataProvider extends ChangeNotifier {
       'sales price': '\$550',
       'category': 'Category 2',
     },
+    {
+      'sn': '10',
+      'date': '2023-09-29',
+      'name': 'Product 10',
+      'item id': 'vwx',
+      'Qty-In': '8',
+      'value': '8',
+      'Qty-Out': '7',
+      'Qty Balance': '1',
+      'cost price': '\$350',
+      'sales price': '\$550',
+      'category': 'Category 2',
+    },
+    {
+      'sn': '10',
+      'date': '2023-09-29',
+      'name': 'Product 10',
+      'item id': 'vwx',
+      'Qty-In': '8',
+      'value': '8',
+      'Qty-Out': '7',
+      'Qty Balance': '1',
+      'cost price': '\$350',
+      'sales price': '\$550',
+      'category': 'Category 2',
+    },
+    {
+      'sn': '10',
+      'date': '2023-09-29',
+      'name': 'Product 10',
+      'item id': 'vwx',
+      'Qty-In': '8',
+      'value': '8',
+      'Qty-Out': '7',
+      'Qty Balance': '1',
+      'cost price': '\$350',
+      'sales price': '\$550',
+      'category': 'Category 2',
+    },
     // Add more data if needed
   ];
   // Variables for date filtering
@@ -198,12 +237,8 @@ class InventoryDataProvider extends ChangeNotifier {
     return filteredData.skip(startIndex).take(itemsPerPage).toList();
   }
 
- 
-
   Future<void> fetchInventoryData() async {
     // Fetching data from a repository can be added here if needed.
     notifyListeners();
   }
-
-  
 }
